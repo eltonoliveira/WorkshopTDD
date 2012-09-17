@@ -7,15 +7,14 @@ require_once '../public/library/SplitDomain.php';
  */
 class SplitDomainTest extends PHPUnit_Framework_TestCase
 {
+    /** ------------------------------------------------------------------------------------------------------------- */
     
-    public function providerProtocols()
+    public function testVerificarAmbiente()
     {
-        return array(
-            'Deve retornar http'  => array('http'),
-            'Deve retornar ftp'   => array('ftp'),
-            'Deve retornar https' => array('https'),
-        );
+        self::assertTrue(TRUE);
     }
+    
+    /** ------------------------------------------------------------------------------------------------------------- */
     
     /**
      * Esse método subsytitui a necessidade de se usar
@@ -34,38 +33,39 @@ class SplitDomainTest extends PHPUnit_Framework_TestCase
     
     /** ------------------------------------------------------------------------------------------------------------- */
     
-    public function testVerificarAmbiente()
+    public function providerProtocols()
     {
-        self::assertTrue(TRUE);
+        return array(
+            'Deve retornar http'  => array('http'),
+            'Deve retornar ftp'   => array('ftp'),
+            'Deve retornar https' => array('https'),
+        );
     }
     
    /** -------------------------------------------------------------------------------------------------------------- */
-    
-    public function testDeveRetornarHttp()
+
+    /**
+     * 
+     * @dataProvider providerDomains
+     */
+    public function testDeveRetornarDominio($domain)
     {
-        $url            = 'http://www.terra.com.br/esporte';
+        $url            = 'http://' . $domain . '/esporte';
         $splitDomain    = new SplitDomain();
-        self::assertEquals('http', $splitDomain->getProcol($url));
+        self::assertEquals($domain, $splitDomain->getDomain($url));
     }
 
     /** ------------------------------------------------------------------------------------------------------------- */
     
-    public function testDeveRetornarFtp()
+    public function providerDomains()
     {
-        $url            = 'ftp://www.terra.com.br/esporte';
-        $splitDomain    = new SplitDomain();
-        self::assertEquals('ftp', $splitDomain->getProcol($url));
+        return array(
+            'Deve retornar o domínio www.google.com.br' => array('www.google.com.br'),
+            'Deve retornar o domínio www.terra.com.br'  => array('www.terra.com.br')
+        );
     }
-
+    
     /** ------------------------------------------------------------------------------------------------------------- */
-
-    public function testDeveRetornarDominio()
-    {
-        $url            = 'ftp://www.terra.com.br/esporte';
-        $splitDomain    = new SplitDomain();
-        self::assertEquals('www.terra.com.br', $splitDomain->getDomain($url));
-    }
-
-    /** ------------------------------------------------------------------------------------------------------------- */
+    
     
 }
