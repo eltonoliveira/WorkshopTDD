@@ -1,0 +1,11 @@
+<phpunit bootstrap ='./boostrap.php' colors="true">
+    <testsuite name="TDD">
+        <directory>./library</directory>
+    </testsuite>
+    
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../public/library</directory>
+        </whitelist>
+    </filter>
+</phpunit>
