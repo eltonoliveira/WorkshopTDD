@@ -4,12 +4,29 @@ require_once '../public/library/SplitDomain.php';
  * Description of SplitDomainTest
  *
  * @author Elton
+ * @name SplitDomainTest
  */
 class SplitDomainTest extends PHPUnit_Framework_TestCase
 {
+    private $splitDomain;
+    
     /** ------------------------------------------------------------------------------------------------------------- */
     
-    public function testVerificarAmbiente()
+    public function setUp() 
+    {
+        $this->splitDomain = new SplitDomain();
+    }
+    
+    /** ------------------------------------------------------------------------------------------------------------- */
+    
+    public function tearDown()
+    {
+        unset($this->splitDomain);        
+    }
+
+    /** ------------------------------------------------------------------------------------------------------------- */
+    
+    public function testVerificaAmbiente()
     {
         self::assertTrue(TRUE);
     }
@@ -17,18 +34,13 @@ class SplitDomainTest extends PHPUnit_Framework_TestCase
     /** ------------------------------------------------------------------------------------------------------------- */
     
     /**
-     * Esse método subsytitui a necessidade de se usar
-     * os métodos:
-     *  - testDeveRetornarHttp
-     *  - testDeveRetornarFtp
-     * 
+     *
      * @dataProvider providerProtocols
      */
-    public function testGetProtocol($protocol)
+    public function testDeveRetornarProtocolo($protocol)
     {
         $url = $protocol . '://www.terra.com.br/esporte';
-        $splitDomain    = new SplitDomain();
-        self::assertEquals($protocol, $splitDomain->getProcol($url));
+        self::assertEquals($protocol, $this->splitDomain->getProcol($url));
     }
     
     /** ------------------------------------------------------------------------------------------------------------- */
@@ -51,8 +63,7 @@ class SplitDomainTest extends PHPUnit_Framework_TestCase
     public function testDeveRetornarDominio($domain)
     {
         $url            = 'http://' . $domain . '/esporte';
-        $splitDomain    = new SplitDomain();
-        self::assertEquals($domain, $splitDomain->getDomain($url));
+        self::assertEquals($domain, $this->splitDomain->getDomain($url));
     }
 
     /** ------------------------------------------------------------------------------------------------------------- */
@@ -67,5 +78,25 @@ class SplitDomainTest extends PHPUnit_Framework_TestCase
     
     /** ------------------------------------------------------------------------------------------------------------- */
     
+    /**
+     * 
+     * @dataProvider providerPaths
+     */
+    public function testDeveRetornarPath($path)
+    {
+        $url         = 'http://www.google.com.br/' . $path;
+        self::assertEquals($path, $this->splitDomain->getPath($url));        
+    }
     
+    /** ------------------------------------------------------------------------------------------------------------- */
+    
+    public function providerPaths()
+    {
+        return array(
+            'Deve retornar esportes' => array('esportes'),
+            'Deve retornar politica' => array('politica')            
+        );
+    }
+    
+    /** ------------------------------------------------------------------------------------------------------------- */
 }
